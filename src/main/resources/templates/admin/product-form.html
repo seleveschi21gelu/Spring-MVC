@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Form</title>
+</head>
+<body>
+<h1>Product</h1>
+
+<form action="/web/products/save" method="post" th:object="${product}">
+    <label for="productName">Product name</label>
+    <input type="text" name="productName" id="productName" th:field="*{productName}">
+    <br>
+<!--    <label for="categoryEntity">Category Name</label>-->
+<!--    <input type="text" name="categoryEntity" id="categoryEntity" th:field="*{categoryEntity}">-->
+    <label for="productCategory">Product category</label>
+    <select id="productCategory" th:field="*{categoryEntity}">
+        <option th:each="c:${categories}" th:value="${c.categoryId}" th:text="${c.categoryName}">
+        </option>
+    </select>
+    <span th:if="${#fields.hasErrors('productName')}"
+          th:each="err, stat:${#fields.errors('productName')}"
+          th:utext="!${stat.last} ? ${err}+'&lt;br /&gt;' : ${err}"></span>
+    <input type="hidden" name="productId" th:field="*{productId}">
+    <br>
+    <input type="submit">
+
+</form>
+</body>
+</html>

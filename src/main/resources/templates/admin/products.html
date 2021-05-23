@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Products Page</title>
+</head>
+<body>
+<h1>Lista produse</h1>
+<form th:action="@{/web/products/search}" method="post">
+    <label for="searchString">Search by name</label>
+    <input type="text" name="searchString" id="searchString">
+    <input type="submit">
+</form>
+<table>
+    <tr>
+        <th>id</th>
+        <th>Name</th>
+        <td>Category</td>
+        <th>Action</th>
+    </tr>
+<!--    <tr th:each="p:${products}">-->
+<!--        <span th:if="${not #lists.isEmpty(products)}"></span>-->
+<!--    -->
+<!--    <td><span th:unless = "${not #lists.isEmpty(products)}">No product found</span></td></tr>-->
+
+
+    <tr th:if="${not #lists.isEmpty(products)}" th:each="p:${products}">
+        <td th:text="${p.productId}"></td>
+        <td th:text="${p.productName}"></td>
+        <td th:text="${p.categoryEntity} ? ${p.categoryEntity.categoryName} : 'Need a category'"/>
+
+
+        <!-- if(p.productEntity){
+        p.productEntity.productName
+        }
+        else{
+        Sout{"Need a category"}
+        }
+        -->
+
+
+        <td><a th:href="@{'/web/products/edit/{id}'(id=${p.productId})}">Edit</a>
+            <a th:href="@{'/web/products/delete/'+${p.productId}}">Delete</a>
+        </td>
+    </tr>
+
+    <a href="/web/products/add">Add product</a>
+
+
+</table>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Category</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c:${categories}">
+        <td th:text="${c.categoryId}"></td>
+        <td th:text="${c.categoryName}"></td>
+        <td><a th:href="@{'/web/categories/edit/'+${c.categoryId}}">Edit</a>
+        <td><a th:href="@{'/web/categories/delete/{id}'(id=${c.categoryId})}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a href="/web/categories/add">Add category</a>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="signOut"/>
+</form>
+</body>
+</html>
